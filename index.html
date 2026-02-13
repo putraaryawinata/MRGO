@@ -3,336 +3,295 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Project page: Safe multi-robot navigation under growing obstacles using Hamilton–Jacobi reachability and mixed-integer coordination." />
   <title>Safe Multi-Robot Navigation under Growing Obstacles</title>
+  <meta name="description" content="Project page for a paper on safe multi-robot navigation under expanding obstacles using HJ reachability and MIP coordination." />
 
-  <!-- Optional: nice font (safe to remove if you prefer fully offline) -->
+  <!-- Google-Sites-like typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#0b1020;
-      --panel:#111a33;
-      --panel2:#0f1730;
-      --text:#e8ecff;
-      --muted:#b8c0e6;
-      --accent:#7aa2ff;
-      --accent2:#70f0c1;
-      --border:rgba(255,255,255,.12);
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius:16px;
-      --maxw: 1020px;
+      --text:#202124;
+      --muted:#5f6368;
+      --link:#1a73e8;          /* Google blue */
+      --border:#dadce0;        /* Google gray border */
+      --bg:#ffffff;
+      --navbg:#f8f9fa;
+      --maxw: 980px;
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 700px at 20% 0%, rgba(122,162,255,.18), transparent 60%),
-                  radial-gradient(1200px 700px at 80% 10%, rgba(112,240,193,.12), transparent 55%),
-                  var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.55;
     }
-    a{color:var(--accent); text-decoration:none}
+    a{color:var(--link); text-decoration:none}
     a:hover{text-decoration:underline}
-    .wrap{max-width:var(--maxw); margin:0 auto; padding:24px}
-    .topbar{
+
+    /* Top Google-Sites-like header */
+    .top{
       position: sticky;
       top: 0;
-      backdrop-filter: blur(10px);
-      background: rgba(11,16,32,.65);
+      z-index: 10;
+      background: var(--navbg);
       border-bottom: 1px solid var(--border);
-      z-index: 50;
     }
-    .nav{
+    .top-inner{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 10px 18px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:16px;
-      padding:14px 0;
     }
-    .nav .brand{
-      display:flex; flex-direction:column; gap:2px;
+    .site-name{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width: 180px;
     }
-    .nav .brand .lab{
+    .site-name .lab{
+      font-size:14px;
       font-weight:700;
       letter-spacing:.2px;
     }
-    .nav .brand .sub{
+    .site-name .sub{
+      font-size:12px;
       color:var(--muted);
-      font-size: 13px;
     }
-    .navlinks{
-      display:flex; flex-wrap:wrap; gap:14px;
-      font-size: 14px;
-      color: var(--muted);
+    .nav{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      font-size:14px;
     }
-    .navlinks a{color: var(--muted)}
-    .navlinks a:hover{color: var(--text)}
-    .hero{
-      padding:28px 0 10px;
+    .nav a{color:var(--muted); padding:6px 8px; border-radius:6px}
+    .nav a:hover{color:var(--text); background:#eef3fd; text-decoration:none}
+
+    .wrap{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 22px 18px 40px;
     }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:8px 12px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: rgba(17,26,51,.55);
-      box-shadow: var(--shadow);
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .pill .dot{
-      width:8px; height:8px; border-radius: 999px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      box-shadow: 0 0 18px rgba(122,162,255,.6);
+
+    /* Title block (Google Sites style: big title, simple metadata) */
+    .title-block{
+      padding: 18px 0 6px;
     }
     h1{
-      margin:14px 0 10px;
-      font-size: clamp(28px, 4vw, 44px);
-      line-height: 1.15;
-      letter-spacing: -0.6px;
-    }
-    .authors{
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 15px;
-    }
-    .authors strong{color: var(--text); font-weight:600}
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      margin: 18px 0 26px;
-    }
-    @media (min-width: 900px){
-      .grid{grid-template-columns: 1.3fr .7fr;}
-    }
-    .card{
-      background: linear-gradient(180deg, rgba(17,26,51,.92), rgba(15,23,48,.92));
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px 18px;
-    }
-    .card h2{
-      margin:0 0 10px;
-      font-size: 18px;
+      margin: 0 0 8px;
+      font-size: clamp(28px, 3.6vw, 40px);
+      font-weight: 700;
       letter-spacing: -0.2px;
+      line-height: 1.15;
     }
-    .muted{color: var(--muted)}
-    .section{
-      margin: 26px 0;
+    .meta{
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
     }
-    .section h2{
-      font-size: 22px;
+    .meta strong{
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .divider{
+      height:1px;
+      background: var(--border);
+      margin: 18px 0 18px;
+    }
+
+    section{
+      padding: 6px 0 10px;
+    }
+    h2{
+      font-size: 18px;
       margin: 0 0 10px;
-      letter-spacing:-0.2px;
+      font-weight: 700;
     }
-    .overview ul{
-      margin: 10px 0 0 18px;
-    }
-    .kvs{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:10px;
-      margin-top: 8px;
-    }
-    .kv{
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: rgba(255,255,255,.03);
-    }
-    .kv .k{font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing:.08em}
-    .kv .v{margin-top: 2px; font-weight:600}
+    p{margin: 0 0 10px}
+    .muted{color:var(--muted)}
+
+    /* Video/GIF grid similar to simple Google Sites content blocks */
     .media-grid{
       display:grid;
       grid-template-columns: 1fr;
       gap: 16px;
     }
-    @media (min-width: 740px){
+    @media (min-width: 800px){
       .media-grid{grid-template-columns: 1fr 1fr;}
+      .media-grid .wide{grid-column: 1 / -1;}
     }
-    .media{
-      overflow:hidden;
-      padding: 0;
-    }
-    .media .cap{
-      padding: 12px 14px;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 14px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      padding: 3px 10px;
-      border-radius: 999px;
+
+    .card{
       border: 1px solid var(--border);
-      background: rgba(122,162,255,.10);
-      color: var(--text);
-      font-size: 12px;
-      white-space:nowrap;
+      border-radius: 10px;
+      overflow:hidden;
+      background:#fff;
     }
-    img.gif{
+    .card img{
       width:100%;
       height:auto;
       display:block;
-      background: #000;
+      background:#000;
     }
-    footer{
-      margin: 38px 0 14px;
+    .card .cap{
+      padding: 10px 12px;
+      border-top: 1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
       color: var(--muted);
       font-size: 13px;
-      border-top: 1px solid var(--border);
+    }
+    .tag{
+      font-size:12px;
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      white-space:nowrap;
+      background:#fafafa;
+    }
+
+    footer{
+      margin-top: 26px;
       padding-top: 14px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.95em;
+      background:#f1f3f4;
+      padding: 1px 5px;
+      border-radius: 6px;
     }
   </style>
 </head>
 
 <body>
-  <div class="topbar">
-    <div class="wrap">
-      <div class="nav">
-        <div class="brand">
-          <div class="lab">RAIL KWU</div>
-          <div class="sub">Project Page</div>
-        </div>
-        <div class="navlinks">
-          <a href="#abstract">Abstract</a>
-          <a href="#overview">Overview</a>
-          <a href="#videos">Videos</a>
-        </div>
+  <!-- Top header (like Google Sites) -->
+  <div class="top">
+    <div class="top-inner">
+      <div class="site-name">
+        <div class="lab">RAIL KWU</div>
+        <div class="sub">Project Page</div>
       </div>
+      <nav class="nav" aria-label="page navigation">
+        <a href="#abstract">Abstract</a>
+        <a href="#overview">Overview</a>
+        <a href="#videos">Videos</a>
+      </nav>
     </div>
   </div>
 
   <div class="wrap">
-    <header class="hero">
-      <div class="pill"><span class="dot"></span> Multi-Robot Safety • Growing Obstacles • HJ Reachability • MIP Coordination</div>
+    <!-- Title -->
+    <header class="title-block" id="home">
       <h1>Safe Multi-Robot Navigation in Expanding Hazard Environments</h1>
-      <p class="authors">
+      <p class="meta">
         <strong>I Made Putra Arya Winata</strong>, <strong>Sangcheol Oh</strong>, <strong>Junghyun Oh*</strong><br/>
         <span class="muted">Lab: RAIL KWU</span>
       </p>
     </header>
 
-    <div class="grid">
-      <section id="abstract" class="card">
-        <h2>Abstract</h2>
-        <p class="muted" style="margin:0">
-          Safety is a central requirement in multi-robot navigation, and substantial progress has been made on collision
-          avoidance among robots and with static or moving obstacles. However, less attention has been given to hazards
-          whose geometry expands over time, as in hazardous environments where fire, gas, or contamination zones spread
-          and continuously shrink the safe region. In this paper, we study decentralized multi-robot navigation in the
-          presence of growing obstacles modeled as time-varying expanding sets. We formulate admissible (safe) sets for
-          obstacle avoidance, inter-robot collision avoidance, and their combination, and derive safety guarantees under
-          mild assumptions. Finally, we validate the proposed framework in simulations for teams with $N\ge 3$ robots,
-          demonstrating collision-free goal reaching in environments with expanding obstacles.
-        </p>
-      </section>
+    <div class="divider"></div>
 
-      <aside class="card">
-        <h2>Quick Facts</h2>
-        <div class="kvs">
-          <div class="kv">
-            <div class="k">Authors</div>
-            <div class="v">I Made Putra Arya Winata, Sangcheol Oh, Junghyun Oh*</div>
-          </div>
-          <div class="kv">
-            <div class="k">Lab</div>
-            <div class="v">RAIL KWU</div>
-          </div>
-          <div class="kv">
-            <div class="k">Media</div>
-            <div class="v">5 trajectories (N = 3,4,5,6,7)</div>
-          </div>
-        </div>
-      </aside>
-    </div>
-
-    <section id="overview" class="section card overview">
-      <h2>Overview</h2>
-      <p class="muted" style="margin:0 0 10px">
-        We consider decentralized multi-robot navigation with individual goals under <em>growing obstacles</em>
-        (expanding hazard regions). The controller stack combines goal-seeking behavior with safety layers to avoid
-        both inter-robot collisions and time-varying obstacle violations.
-      </p>
-      <ul class="muted">
-        <li><strong>Growing-obstacle reach–avoid:</strong> model expanding hazards as time-varying constraints.</li>
-        <li><strong>HJ safety levels:</strong> compute pairwise safety values for robot–robot interactions.</li>
-        <li><strong>MIP coordination:</strong> assign which robot avoids which to resolve multi-robot conflicts.</li>
-        <li><strong>Safety shield:</strong> enforce obstacle invariance near the expanding boundary.</li>
-      </ul>
-      <p class="muted" style="margin:12px 0 0">
-        (You can replace this paragraph with your paper’s “one-sentence contribution” once finalized.)
+    <!-- Abstract -->
+    <section id="abstract">
+      <h2>Abstract</h2>
+      <p class="muted">
+        Safety is a central requirement in multi-robot navigation, and substantial progress has been made on collision
+        avoidance among robots and with static or moving obstacles. However, less attention has been given to hazards
+        whose geometry expands over time, as in environments where fire, gas, or contamination zones spread and
+        continuously shrink the safe region. In this work, we study decentralized multi-robot navigation in the presence
+        of growing obstacles modeled as time-varying expanding sets. We formulate admissible (safe) sets for obstacle
+        avoidance, inter-robot collision avoidance, and their combination, and provide safety guarantees under mild
+        assumptions. Simulations with $N\in\{3,4,5,6,7\}$ robots demonstrate collision-free goal reaching in expanding
+        obstacle environments.
       </p>
     </section>
 
-    <section id="videos" class="section">
+    <div class="divider"></div>
+
+    <!-- Overview -->
+    <section id="overview">
+      <h2>Overview</h2>
+      <p class="muted">
+        We consider decentralized multi-robot navigation where each robot has an individual goal while operating under
+        expanding hazard regions (“growing obstacles”). The controller stack combines goal-seeking behavior with safety
+        layers to prevent both inter-robot collisions and violations of time-varying obstacle constraints.
+      </p>
+      <p class="muted" style="margin-top:6px">
+        (You can replace this text with a short 2--3 sentence summary from your paper’s Introduction if desired.)
+      </p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Videos -->
+    <section id="videos">
       <h2>Videos</h2>
-      <p class="muted" style="margin-top:0">
-        Below are representative rollouts for different team sizes. Place the GIF files in the same folder as this
-        <code>index.html</code>: <code>3robots.gif</code>, <code>4robots.gif</code>, <code>5robots.gif</code>,
-        <code>6robots.gif</code>, <code>7robots.gif</code>.
+      <p class="muted">
+        Place the following GIF files in the same directory as <code>index.html</code>:
+        <code>3robots.gif</code>, <code>4robots.gif</code>, <code>5robots.gif</code>, <code>6robots.gif</code>, <code>7robots.gif</code>.
       </p>
 
-      <div class="media-grid">
-        <div class="card media">
-          <img class="gif" src="3robots.gif" alt="Trajectory GIF for N=3 robots" />
+      <div class="media-grid" style="margin-top:12px">
+        <div class="card">
+          <img src="3robots.gif" alt="N=3 rollout (3robots.gif)">
           <div class="cap">
             <span><strong>N=3</strong> rollout</span>
-            <span class="badge">3robots.gif</span>
+            <span class="tag">3robots.gif</span>
           </div>
         </div>
 
-        <div class="card media">
-          <img class="gif" src="4robots.gif" alt="Trajectory GIF for N=4 robots" />
+        <div class="card">
+          <img src="4robots.gif" alt="N=4 rollout (4robots.gif)">
           <div class="cap">
             <span><strong>N=4</strong> rollout</span>
-            <span class="badge">4robots.gif</span>
+            <span class="tag">4robots.gif</span>
           </div>
         </div>
 
-        <div class="card media">
-          <img class="gif" src="5robots.gif" alt="Trajectory GIF for N=5 robots" />
+        <div class="card">
+          <img src="5robots.gif" alt="N=5 rollout (5robots.gif)">
           <div class="cap">
             <span><strong>N=5</strong> rollout</span>
-            <span class="badge">5robots.gif</span>
+            <span class="tag">5robots.gif</span>
           </div>
         </div>
 
-        <div class="card media">
-          <img class="gif" src="6robots.gif" alt="Trajectory GIF for N=6 robots" />
+        <div class="card">
+          <img src="6robots.gif" alt="N=6 rollout (6robots.gif)">
           <div class="cap">
             <span><strong>N=6</strong> rollout</span>
-            <span class="badge">6robots.gif</span>
+            <span class="tag">6robots.gif</span>
           </div>
         </div>
 
-        <div class="card media" style="grid-column: 1 / -1;">
-          <img class="gif" src="7robots.gif" alt="Trajectory GIF for N=7 robots" />
+        <div class="card wide">
+          <img src="7robots.gif" alt="N=7 rollout (7robots.gif)">
           <div class="cap">
             <span><strong>N=7</strong> rollout</span>
-            <span class="badge">7robots.gif</span>
+            <span class="tag">7robots.gif</span>
           </div>
         </div>
       </div>
     </section>
 
     <footer>
-      <div>© RAIL KWU — Project page for paper submission.</div>
-      <div class="muted">* indicates corresponding author.</div>
+      <div>* indicates corresponding author.</div>
     </footer>
   </div>
 </body>
