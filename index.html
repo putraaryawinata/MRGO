@@ -211,29 +211,18 @@
     <section id="abstract">
       <h2>Abstract</h2>
       <p class="muted">
-        Safety is a central requirement in multi-robot navigation, and substantial progress has been made on collision
-        avoidance among robots and with static or moving obstacles. However, less attention has been given to hazards
-        whose geometry expands over time, as in environments where fire, gas, or contamination zones spread and
-        continuously shrink the safe region. In this work, we study decentralized multi-robot navigation in the presence
-        of growing obstacles modeled as time-varying expanding sets. We formulate admissible (safe) sets for obstacle
-        avoidance, inter-robot collision avoidance, and their combination, and provide safety guarantees under mild
-        assumptions. Simulations with $N\in\{3,4,5,6,7\}$ robots demonstrate collision-free goal reaching in expanding
-        obstacle environments.
-      </p>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- Overview -->
-    <section id="overview">
-      <h2>Overview</h2>
-      <p class="muted">
-        We consider decentralized multi-robot navigation where each robot has an individual goal while operating under
-        expanding hazard regions (“growing obstacles”). The controller stack combines goal-seeking behavior with safety
-        layers to prevent both inter-robot collisions and violations of time-varying obstacle constraints.
-      </p>
-      <p class="muted" style="margin-top:6px">
-        (You can replace this text with a short 2--3 sentence summary from your paper’s Introduction if desired.)
+        Safety is a critical requirement in multi-robot navigation. Significant progress has been made in collision avoidance
+        among robots and with static or moving obstacles, enabling safe operation in many structured and dynamic environments.
+        However, standard dynamic obstacle models often assume fixed geometry and do not capture hazards whose occupied region
+        expands over time. This behavior is common in hazardous environments where fire fronts, gas plumes, or contamination
+        zones spread and continuously shrink the safe region, imposing deadline-like constraints on motion planning. In this
+        paper, we study decentralized multi-robot navigation with growing obstacles modeled as time-varying expanding sets.
+        We formulate reach-avoid navigation under a time-varying admissible set and compute a Hamilton-Jacobi (HJ) reachability
+        value function using a double-obstacle variational inequality to encode goal reaching while avoiding expanding hazards.
+        For inter-robot safety, we incorporate pairwise HJ safety levels and coordinate avoidance responsibility via a mixed-integer
+        assignment mechanism, allowing each robot to switch between nominal goal-seeking control and provably safe avoidance actions.
+        We further provide safety guarantees under assumptions for both obstacle avoidance and inter-robot collision avoidance.
+        Simulations with $N\ge 3$ robots demonstrate collision-free goal reaching in expanding-obstacle environments. 
       </p>
     </section>
 
@@ -280,7 +269,7 @@
           </div>
         </div>
 
-        <div class="card wide">
+        <div class="card">
           <img src="final7robots.gif" alt="N=7 rollout (7robots.gif)">
           <div class="cap">
             <span><strong>N=7</strong> rollout</span>
